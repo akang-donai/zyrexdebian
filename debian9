@@ -1,0 +1,23 @@
+#!/bin/bash
+
+## Doni Kuswaryadi - MIZUTECH ##
+
+## Updating System
+apt update
+apt install wget curl gzip git make unzip p7zip software-properties-common dirmngr net-tools lsb-release apt-transport-https ca-certificates -y
+sed -i 's/main/main contrib non-free/g' /etc/apt/source.list
+
+## Installing Network
+apt update
+sh -c 'echo blacklist r8169 >> /etc/modprobe.d/blacklist.conf'
+apt install build-essential linux-headers-$(uname -r) -y
+firmware-realtek r8168-dkms -y
+apt upgrade -y
+
+## Installing The Subs
+apt-key adv --fetch-keys 'https://mariadb.org/mariadb_release_signing_key.asc'
+add-apt-repository 'deb [arch=amd64,i386,ppc64el] http://mirror.biznetgio.com/mariadb/repo/10.4/debian stretch main'
+apt update
+
+## The Apps
+git clone https://github.com/iredmail/iRedMail.git
